@@ -31,19 +31,36 @@
   </header>
 
   <main class="container">
+
+    <!-- Intro -->
+    <section class="card reveal">
+      <p>
+        👋 Willkommen auf meiner Ausbildungsbewerbungsseite.
+        Hier finden Sie mein Anschreiben, meinen Lebenslauf und meine Zeugnisse
+        übersichtlich zusammengefasst. Alle Unterlagen stehen unten zusätzlich
+        als Download zur Verfügung.
+      </p>
+    </section>
+
     <!-- Anschreiben (Seitenbilder oder PDF) -->
     <section class="card reveal">
       <h2>Mein Anschreiben</h2>
+      <p class="muted small">
+        Das folgende Anschreiben entspricht der Version, die ich im Rahmen meiner Bewerbung
+        um einen Ausbildungsplatz als Fachinformatiker (Anwendungsentwicklung) einreiche.
+      </p>
       <div id="letterGallery" class="img-grid"></div>
       <div id="letterPdfWrap" class="pdf-wrap hidden">
         <object data="anschreiben.pdf" type="application/pdf" aria-label="Anschreiben PDF">
           <p>Vorschau nicht verfügbar. <a class="button" href="anschreiben.pdf" target="_blank" rel="noopener">Anschreiben öffnen</a></p>
         </object>
       </div>
-      <p class="muted small">Hinweis: Je nach Gerät wird die PDF-Vorschau ggf. nicht angezeigt – Download unten.</p>
+      <p class="muted small">
+        Hinweis: Je nach Gerät wird die PDF-Vorschau ggf. nicht angezeigt – Download unten.
+      </p>
     </section>
 
-    <!-- Lebenslauf (eigene Sektion) -->
+    <!-- Lebenslauf -->
     <section class="card reveal">
       <h2>Lebenslauf</h2>
       <div class="pdf-wrap">
@@ -58,14 +75,19 @@
     <section class="card reveal">
       <h2>Zeugnisse & Nachweise</h2>
       <div id="zeugnisse" class="img-grid"></div>
-      <p class="muted small">Die Bilder sind komprimiert für schnelle Ladezeiten. Vollversionen im Download-Bereich.</p>
+      <p class="muted small">
+        Die Bilder sind komprimiert für schnelle Ladezeiten. Vollversionen stehen im Download-Bereich als PDF/ZIP bereit.
+      </p>
     </section>
 
     <!-- Downloads -->
     <section id="downloads" class="card reveal">
       <h2>Downloads</h2>
       <div class="expander">
-        <button id="dlToggle" class="button">Downloads anzeigen</button>
+        <button id="dlToggle" class="button button-toggle">
+          <span>Alle Unterlagen anzeigen</span>
+          <span class="chevron">▾</span>
+        </button>
         <div id="dlPanel" class="panel">
           <ul class="dl-list">
             <li class="optional-zip hidden">
@@ -105,7 +127,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <small>© <span id="y"></span> Tom Hillen · Seite bewusst nicht indexierbar.</small>
+      <small>© <span id="y"></span> Tom Hillen · Diese Seite wird ausschließlich für Bewerbungszwecke verwendet.</small>
     </div>
   </footer>
 
@@ -132,14 +154,15 @@
 
     async function exists(path){ try{ const r=await fetch(path,{method:'HEAD'}); return r.ok; }catch(e){ return false; } }
 
-    // Anschreiben: erst Bilder-Galerie (anschreiben-page-1.jpg, 2, …), sonst PDF
+    // Anschreiben: erst Seitenbilder, sonst PDF
     (async function loadLetter(){
       const gallery = document.getElementById('letterGallery');
       let i=1, found=false;
       while (await exists(`anschreiben-page-${i}.jpg`)) {
         const fig = document.createElement('figure');
         fig.className = 'img-card';
-        fig.innerHTML = `<img src="anschreiben-page-${i}.jpg" alt="Anschreiben Seite ${i}"><figcaption>Anschreiben – Seite ${i}</figcaption>`;
+        fig.innerHTML = `<img src="anschreiben-page-${i}.jpg" alt="Anschreiben Seite ${i}">
+                         <figcaption>Anschreiben – Seite ${i}</figcaption>`;
         gallery.appendChild(fig);
         i++; found=true;
       }
@@ -155,7 +178,8 @@
       while (await exists(`zeugnis-${i}.jpg`)){
         const fig = document.createElement('figure');
         fig.className='img-card';
-        fig.innerHTML = `<img src="zeugnis-${i}.jpg" alt="Zeugnis ${i}"><figcaption>Zeugnis ${i}</figcaption>`;
+        fig.innerHTML = `<img src="zeugnis-${i}.jpg" alt="Zeugnis ${i}">
+                         <figcaption>Zeugnisauszug ${i}</figcaption>`;
         wrap.appendChild(fig);
         i++; any=true;
       }
@@ -177,7 +201,10 @@
 
       const btn = document.getElementById('dlToggle');
       const panel = document.getElementById('dlPanel');
-      btn.addEventListener('click', ()=> panel.classList.toggle('open'));
+      btn.addEventListener('click', ()=>{
+        panel.classList.toggle('open');
+        btn.classList.toggle('open');
+      });
     })();
   </script>
 </body>
